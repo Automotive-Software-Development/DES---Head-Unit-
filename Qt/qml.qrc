@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>Audio.qml</file>
+        <file>Video.qml</file>
+        <file>Dashboard.qml</file>
+        <file>assets/Music.svg</file>
+        <file>assets/Video.svg</file>
+        <file>assets/Settings.svg</file>
+        <file>Settings.qml</file>
+    </qresource>
+</RCC>
