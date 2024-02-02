@@ -14,28 +14,35 @@ Window {
         anchors.fill: parent
         width: parent.width
         height: parent.height
+        color: "black"
 
-        LinearGradient {
-            anchors.fill: parent
-            gradient: Gradient {
-                GradientStop { position: 0.04; color: "#000080" } // Dark Blue
-                GradientStop { position: 1.0; color: "#000000" } // Black
+        Item {
+            width: parent.width
+            height: parent.height
+
+            RadialGradient {
+                anchors.fill: parent
+                gradient: Gradient {
+                    GradientStop { position: 0.0; color: "gray" }
+                    GradientStop { position: 0.05; color: "gray" }
+                    GradientStop { position: 0.4; color: "transparent" }
+                    GradientStop { position: 1.0; color: "black" }
+                }
             }
-            opacity: 0.7
         }
 
         Item {
             width: parent.width
             height: parent.height
             Repeater {
-                model: 20  // Adjust the number of bubbles
+                model: 25
                 Rectangle {
                     required property int index
                     id: bubble
                     width: Math.random() * 50 + 20
                     height: width
                     x: Math.random() * parent.width
-                    y: Math.random() * 220
+                    y: Math.random() * 150
                     radius: width / 2
                     color: "white"
                     opacity: Math.random() * 0.5 + 0.1
