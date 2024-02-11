@@ -1,0 +1,38 @@
+
+# Hardware Setup Instructions for Qt on Raspberry Pi
+
+
+
+## Initial Steps
+
+
+## Installing Qt via apt-get
+
+1. **Update Package Lists**:
+   Ensure your Raspberry Pi's package lists are up-to-date to avoid missing out on available packages.
+   ```bash
+   sudo apt-get update
+   ```
+
+2. **Install Qt Base Development Package**:
+   Install `qtbase5-dev` to get the essential Qt 5 development files.
+   ```bash
+   sudo apt-get install qtbase5-dev
+   ```
+
+3. **Install Qt Chooser**:
+   `qtchooser` helps manage the default Qt version if multiple versions are installed.
+   ```bash
+   sudo apt-get install qtchooser
+   ```
+
+4. **Install Qt Widgets Library**:
+   For GUI development, `libqt5widgets5` provides the widgets module.
+   ```bash
+   sudo apt-get install libqt5widgets5
+   ```
+
+5. **Verification**:
+   Check the installation with `qmake -v`, confirming Qt version 5.15.8 is correctly installed.
+
+These steps ensure the Raspberry Pi is prepared for developing both console and GUI applications using Qt.
