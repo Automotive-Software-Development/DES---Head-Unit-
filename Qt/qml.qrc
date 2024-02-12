@@ -1,12 +1,19 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>Audio.qml</file>
-        <file>Video.qml</file>
+        <file>AudioLayout.qml</file>
         <file>Dashboard.qml</file>
-        <file>assets/Music.svg</file>
-        <file>assets/Video.svg</file>
-        <file>assets/Settings.svg</file>
         <file>Settings.qml</file>
+        <file>assets/Images/Music.svg</file>
+        <file>assets/Images/Settings.svg</file>
+        <file>assets/Images/Video.svg</file>
+        <file>assets/Images/Back.svg</file>
+        <file>Back.qml</file>
+        <file>assets/Images/Pause.svg</file>
+        <file>assets/Images/Play.svg</file>
+        <file>assets/Images/Volume_Down.svg</file>
+        <file>assets/Images/Volume_Up.svg</file>
+        <file>assets/Images/Next.svg</file>
+        <file>assets/Images/Previous.svg</file>
     </qresource>
 </RCC>

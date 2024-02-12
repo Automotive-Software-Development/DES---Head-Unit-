@@ -31,24 +31,24 @@ Window {
             }
         }
 
-        Item {
-            width: parent.width
-            height: parent.height
-            Repeater {
-                model: 25
-                Rectangle {
-                    required property int index
-                    id: bubble
-                    width: Math.random() * 50 + 20
-                    height: width
-                    x: Math.random() * parent.width
-                    y: Math.random() * 150
-                    radius: width / 2
-                    color: "white"
-                    opacity: Math.random() * 0.5 + 0.1
-                }
-            }
-        }
+        // Item {
+        //     width: parent.width
+        //     height: parent.height
+        //     Repeater {
+        //         model: 25
+        //         Rectangle {
+        //             required property int index
+        //             id: bubble
+        //             width: Math.random() * 50 + 20
+        //             height: width
+        //             x: Math.random() * parent.width
+        //             y: Math.random() * 150
+        //             radius: width / 2
+        //             color: "white"
+        //             opacity: Math.random() * 0.5 + 0.1
+        //         }
+        //     }
+        // }
 
         Loader {
             id: dynamicLayoutLoader

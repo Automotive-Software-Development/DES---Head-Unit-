@@ -3,7 +3,7 @@ import QtQuick 2.15
 Item {
     id: dashboardLayout
     Text {
-        id: time
+        id: dashboardTime
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter // change it later
         text: main.currentTime
@@ -28,7 +28,7 @@ Item {
             opacity: 0.2
         }
         Image {
-            source: "qrc:/assets/Music.svg"
+            source: "qrc:/assets/Images/Music.svg"
             anchors.centerIn: music
             height: 60
             width: 60
@@ -48,7 +48,7 @@ Item {
             anchors.fill: parent
             onClicked: {
                 console.log("Music touched");
-                main.componentSource = "Audio.qml";
+                main.componentSource = "AudioLayout.qml";
             }
         }
     }
@@ -69,7 +69,7 @@ Item {
             opacity: 0.2
         }
         Image {
-            source: "qrc:/assets/Video.svg"
+            source: "qrc:/assets/Images/Video.svg"
             anchors.centerIn: video
             height: 60
             width: 60
@@ -90,7 +90,7 @@ Item {
             anchors.fill: parent
             onClicked: {
                 console.log("Video touched");
-                main.componentSource = "Video.qml";
+                main.componentSource = "VideoLayout.qml";
             }
         }
     }
@@ -112,7 +112,7 @@ Item {
             opacity: 0.2
         }
         Image {
-            source: "qrc:/assets/Settings.svg"
+            source: "qrc:/assets/Images/Settings.svg"
             anchors.centerIn: settings
             height: 60
             width: 60
