@@ -1,5 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <currenttime.h>
+#include <QQmlContext>
 
 int main(int argc, char *argv[])
 {
@@ -9,6 +11,13 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
+
+    CurrentTime obj;
+    QObject::connect(&obj, SIGNAL(currentTimeChanged()), &obj, SLOT(updateCurrentTime()));
+
+    QQmlContext * rootContext = engine.rootContext();
+    rootContext->setContextProperty("Head_Unit", &obj);
+
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(
         &engine,

@@ -6,7 +6,7 @@ Item {
         id: time
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter // change it later
-        text: Qt.formatTime(new Date(),"hh:mm")
+        text: main.currentTime
         font.pointSize: 150
         color: "#fff"
     }

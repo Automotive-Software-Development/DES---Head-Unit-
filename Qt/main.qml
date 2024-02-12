@@ -57,4 +57,5 @@ Window {
         }
     }
     property string componentSource: "Dashboard.qml"
+    property string currentTime: Head_Unit ? Head_Unit.currentTime : Qt.formatTime(new Date(),"hh:mm");
 }
