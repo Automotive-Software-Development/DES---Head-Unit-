@@ -2,6 +2,7 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>AudioLayout.qml</file>
+        <file>VideoLayout.qml</file>
         <file>Dashboard.qml</file>
         <file>Settings.qml</file>
         <file>assets/Images/Music.svg</file>
