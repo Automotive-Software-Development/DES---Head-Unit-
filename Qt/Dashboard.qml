@@ -11,6 +11,12 @@ Item {
         color: "#fff"
     }
 
+    Text {
+        text: main.gearType
+        color: "#fff"
+        font.pointSize: 100
+    }
+
     // Music
     Rectangle {
         height: 130

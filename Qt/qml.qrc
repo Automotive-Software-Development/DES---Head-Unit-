@@ -1,9 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>AudioLayout.qml</file>
         <file>VideoLayout.qml</file>
-        <file>Dashboard.qml</file>
         <file>Settings.qml</file>
         <file>assets/Images/Music.svg</file>
         <file>assets/Images/Settings.svg</file>
@@ -16,5 +14,44 @@
         <file>assets/Images/Volume_Up.svg</file>
         <file>assets/Images/Next.svg</file>
         <file>assets/Images/Previous.svg</file>
+        <file>assets/Images/bg.jpeg</file>
+        <file>Dashboard2.qml</file>
+        <file>Time.qml</file>
+        <file>Gear.qml</file>
+        <file>assets/Images/background.png</file>
+        <file>assets/Images/bg-mask.png</file>
+        <file>assets/Images/car-highlights.png</file>
+        <file>GearMenu.qml</file>
+        <file>assets/Images/Music.jpg</file>
+        <file>AudioLayout2.qml</file>
+        <file>Map.qml</file>
+        <file>assets/HTML/map.html</file>
+        <file>assets/Images/Calendar.svg</file>
+        <file>assets/Images/About.svg</file>
+        <file>assets/Images/Bluetooth.svg</file>
+        <file>assets/Images/Power.svg</file>
+        <file>assets/Images/Time.svg</file>
+        <file>assets/Images/Appearance.svg</file>
+        <file>assets/Images/FullScreen.svg</file>
+        <file>assets/Images/SeaMe.png</file>
+        <file>assets/Images/Marker.svg</file>
+        <file>assets/Images/Location.svg</file>
+        <file>components/BigForecastIcon.qml</file>
+        <file>components/ForecastIcon.qml</file>
+        <file>components/WeatherIcon.qml</file>
+        <file>icons/qt_attribution.json</file>
+        <file>icons/README.txt</file>
+        <file>icons/weather-few-clouds.png</file>
+        <file>icons/weather-fog.png</file>
+        <file>icons/weather-haze.png</file>
+        <file>icons/weather-icy.png</file>
+        <file>icons/weather-overcast.png</file>
+        <file>icons/weather-showers.png</file>
+        <file>icons/weather-sleet.png</file>
+        <file>icons/weather-snow.png</file>
+        <file>icons/weather-storm.png</file>
+        <file>icons/weather-sunny-very-few-clouds.png</file>
+        <file>icons/weather-sunny.png</file>
+        <file>icons/weather-thundershower.png</file>
     </qresource>
 </RCC>

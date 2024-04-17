@@ -422,7 +422,6 @@ Item {
                 mediaPlayer.volume = volumeControl.value;
             }
         }
-
     }
 
 

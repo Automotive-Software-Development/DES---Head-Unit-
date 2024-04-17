@@ -1,18 +1,17 @@
 import QtQuick 2.15
 import QtMultimedia 5.15
+import QtQml.Models 2.15
 import QtQuick.Controls 2.15
 import Qt.labs.folderlistmodel 2.15
-import QtQml 2.15
 import QtGraphicalEffects 1.15
 
-
 Item {
-    id: videoLayout
+    id: audioLayout
     width: parent.width
     height: parent.height
 
     RadialGradient {
-        visible: folderModel.count === 0
+        visible: audioListModel.length === 0
         anchors.fill: parent
         gradient: Gradient {
             GradientStop { position: 0.0; color: themeColor }
@@ -22,7 +21,7 @@ Item {
     }
 
     Text {
-        visible: folderModel.count === 0
+        visible: audioListModel.length === 0
         color: "#fff"
         text: "Please plug-in your USB!"
         font.pointSize: 16
@@ -56,40 +55,21 @@ Item {
     }
 
     Back {
-        id: videoLayoutForBack
+        id: audioLayoutForBack
         width: parent.width
     }
 
     Item {
-        visible: folderModel.count > 0
-        id: loopItemForVideo
+        visible: audioListModel.length > 0
+        id: loopItemForAudio
         anchors{
-            top: videoLayoutForBack.top
+            top: audioLayoutForBack.top
             topMargin: 40
-            left: videoLayoutForBack.left
+            left: audioLayoutForBack.left
             bottom: bottomLine.top
         }
         width: parent.width * 0.4
-        height: parent.height - videoLayoutForBack.height
-
-        FolderListModel {
-            id: folderModel
-            folder: "file:///home/charmi/Videos" // Specify the path to your pendrive folder
-            nameFilters: ["*.mp4"]
-            showDirs: false
-            onStatusChanged: {
-                if (status === FolderListModel.Ready) {
-                    for (var i = 0; i < folderModel.count; i++) {
-                        videoListModel.append({
-                                                  "name": folderModel.get(i, "fileName"),
-                                                  "url": "file://" + folderModel.get(i, "filePath"),
-                                                  "selected": false
-                                              });
-                    }
-                }
-            }
-        }
-
+        height: parent.height
         ScrollView {
             id: scrollView
             width: parent.width
@@ -99,41 +79,51 @@ Item {
             ScrollBar.vertical.policy: ScrollBar.AlwaysOn
             ListView {
                 id: listView
-                width: parent.width
-                height: parent.height
-                model: ListModel {
-                    id: videoListModel
-                }
+                width: scrollView.width
+                height: scrollView.height
+                model: audioListModel
                 delegate: Rectangle {
                     width: parent.width
-                    height: 70
+                    height: 72
                     color: "transparent"
                     border.color: "#fff"
 
+                    Rectangle {
+                        id: smallLogo
+                        width: 40
+                        height: width
+                        radius: width * 0.5
+                        anchors {
+                            verticalCenter: parent.verticalCenter
+                            left: parent.left
+                            leftMargin: 20
+                        }
+
+                        Image {
+                            source: modelData.logo
+                            anchors.fill: parent
+                            fillMode: Image.Stretch
+                        }
+                    }
+
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
-                        anchors.left: parent.left
-                        anchors.leftMargin: 20
-                        text: model.name
+                        anchors.left: smallLogo.right
+                        anchors.leftMargin: 10
+                        text: modelData.name
                         color: "#fff"
                         font.pointSize: 16
                     }
 
                     MouseArea {
-                        id: mouseArea
                         anchors.fill: parent
                         onClicked: {
-                            if (mediaPlayer.playbackState === MediaPlayer.PlayingState) {
-                                mediaPlayer.pause();
-                            }
                             // Play the selected audio file
-                            videoSelected = true;
-                            videoPlayer.source = model.url;
-                            videoPlayer.play();
-
-                            videoPlayer.durationChanged.connect(function() {
-                                console.log("Duration:", formatDuration(videoPlayer.duration));
-                            });
+                            audioSelected = true;
+                            mediaPlayer.source = modelData.url;
+                            mediaPlayer.play();
+                            currentSongIndex = index;
+                            currentLogo = modelData.logo;
                         }
                     }
                 }
@@ -141,40 +131,16 @@ Item {
         }
     }
 
-    MediaPlayer {
-        id: videoPlayer
-        volume: 1.0 // Initial volume
-        autoPlay: true
-        onDurationChanged: {
-            if (videoPlayer.duration > 0) {
-                // Start the slider update timer when the duration becomes available
-                sliderUpdateTimer.start();
-            }
-        }
-        onPositionChanged: {
-            if (videoPlayer.duration > 0) {
-                control.value = videoPlayer.position / videoPlayer.duration;
-                elapsedTime = formatDuration(videoPlayer.position);
-            }
-        }
-        onErrorChanged: {
-            // Debugging: Check if there's any error
-            if (videoPlayer.error !== MediaPlayer.NoError) {
-                console.error("MediaPlayer Error:", videoPlayer.errorString);
-            }
-        }
-    }
-
     Rectangle {
-        visible: folderModel.count > 0
+        visible: audioListModel.length > 0
         id: verticalSeparator
         color: "#fff"
         height: parent.height
         width: 1
         anchors {
-            top: videoLayoutForBack.top
+            top: audioLayoutForBack.top
             topMargin: 40
-            left: loopItemForVideo.right
+            left: loopItemForAudio.right
             bottom: bottomLine.top
         }
     }
@@ -182,12 +148,12 @@ Item {
     /////////////////////////////////////////////////////////////////////////////////
 
     Item {
-        visible: folderModel.count > 0
+        visible: audioListModel.length > 0
         height: parent.height
-        width: parent.width - loopItemForVideo.width
+        width: parent.width - loopItemForAudio.width
         anchors {
-            top: videoLayoutForBack.top
-            topMargin: 40
+            top: audioLayoutForBack.top
+            topMargin: 40 // need to check
             left: verticalSeparator.right
             bottom: bottomLine.top
         }
@@ -202,56 +168,90 @@ Item {
         }
 
         Text {
-            visible: !videoSelected
-            id: noVideoSelected
-            text: "Please select a video to play!"
+            visible: !audioSelected
+            id: noAudioSelected
+            text: "Please select an audio to play!"
             font.pointSize: 16
             color: "#fff"
             anchors.centerIn: parent
         }
 
         Rectangle {
-            visible: videoSelected
-            id: videoLogoOuter
-            height: parent.height - 4
-            width: parent.width
+            visible: audioSelected
+            id: audioLogoInner
+            height: 250
+            width: 250
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors {
-                top: parent.top
-                topMargin: 1
-                bottom: parent.bottom
-                bottomMargin: 1
-            }
-
+            anchors.top: parent.top
+            anchors.topMargin: 100
             color: "transparent"
             border.color: "#fff"
-            VideoOutput {
-                id: videoOutput
+            Image {
+                id: audioLogo
+                source: currentLogo
                 anchors.fill: parent
-                source: videoPlayer
-                fillMode: VideoOutput.PreserveAspectCrop
+                fillMode: Image.Stretch
             }
         }
+        Rectangle {
+            visible: audioSelected
+            id: audioLogoOuter
+            height: 310
+            width: 310
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: parent.top
+            anchors.topMargin: 70
+            radius: 10
+            color: "transparent"
+            border.color: "#fff"
+            border.width: 15
+        }
 
-        Timer {
-            id: sliderUpdateTimer
-            interval: 1000 // Update every second
-            running: videoPlayer.playbackState === MediaPlayer.PlayingState // Only update when the media is playing
+        Rectangle {
+            visible: audioSelected
+            id: leftLine
+            color: "#fff"
+            height: 1
+            anchors.left: parent.left
+            anchors.right: audioLogoOuter.left
+            anchors.top: parent.top
+            anchors.topMargin: 50 + 175 // this should be the same as audioLogoOuter's topMargin + audioLogoOuter's radius
+            width: audioLogoOuter.left - parent.left
+        }
 
-            onTriggered: {
-                if (videoPlayer.duration > 0) {
-                    control.value = videoPlayer.position / videoPlayer.duration;
-                }
-            }
+        Rectangle {
+            visible: audioSelected
+            id: righttLine
+            color: "#fff"
+            height: 1
+            anchors.left: audioLogoOuter.right
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.topMargin: 50 + 175 // this should be the same as audioLogoOuter's topMargin + audioLogoOuter's radius
+            width: parent.right - audioLogoOuter.right
+        }
+
+        Text {
+            visible: audioSelected
+            id: audioDuration
+            text: mediaPlayer.duration > 0 ? elapsedTime : ''
+            font.pointSize: 12
+            color: "#fff"
+            anchors.top: audioLogoOuter.bottom
+            anchors.topMargin: 5
+            anchors.left: parent.left
+            anchors.leftMargin: 10
         }
 
         Slider {
-            visible: videoSelected
+            visible: audioSelected
             id: control
-            value: 0.0
+            value: sliderValue
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.bottom: volumeControl.top
-            width: 600
+            anchors.top: audioLogoOuter.bottom
+            anchors.left: audioDuration.right
+            anchors.leftMargin: 10
+            width: 500
 
             background: Rectangle {
                 x: control.leftPadding
@@ -283,53 +283,94 @@ Item {
 
             onValueChanged: {
                 // Calculate the position in milliseconds based on the slider's value
-                var newPosition = control.value * videoPlayer.duration;
+                var newPosition = control.value * mediaPlayer.duration;
 
                 // Seek to the new position
-                videoPlayer.seek(newPosition);
+                mediaPlayer.seek(newPosition);
+            }
+        }
+
+        Text {
+            visible: audioSelected
+            id: audioDurationTotal
+            text: mediaPlayer.duration > 0 ? formatDuration(mediaPlayer.duration) : ''
+            font.pointSize: 12
+            color: "#fff"
+            anchors.top: audioLogoOuter.bottom
+            anchors.topMargin: 5
+            anchors.left: control.right
+            anchors.leftMargin: 10
+        }
+
+        Button {
+            id: previousAudio
+            visible: audioSelected
+            height: control.height
+            width: 30
+            anchors.right: playOrPauseButton.left
+            anchors.rightMargin: 3
+            anchors.top: control.bottom
+            anchors.topMargin: 8
+            background: Rectangle {
+                color: "transparent"
+            }
+            enabled: currentSongIndex > 0
+            Image {
+                id: previousButton
+                source: "qrc:/assets/Images/Previous.svg"
+                anchors.centerIn: parent
+                width: parent.width
+                height: parent.height
+            }
+            onClicked: {
+                if (currentSongIndex > 0) {
+                    currentSongIndex--;
+                    playCurrentItem();
+                }
             }
         }
 
         Button {
             id: playOrPauseButton
-            visible: videoSelected
+            visible: audioSelected
             height: control.height
             width: 30
-            anchors.left: parent.left
-            anchors.leftMargin: 20
+            anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: control.bottom
+            anchors.topMargin: 8
             background: Rectangle {
                 color: "transparent"
             }
 
             Image {
                 id: playOrPause
-                source: videoPlayer.playbackState === MediaPlayer.PlayingState ? "qrc:/assets/Images/Pause.svg" : "qrc:/assets/Images/Play.svg"
+                source: mediaPlayer.playbackState === MediaPlayer.PlayingState ? "qrc:/assets/Images/Pause.svg" : "qrc:/assets/Images/Play.svg"
                 anchors.centerIn: parent
                 width: parent.width
                 height: parent.height
             }
             onClicked: {
-                if (videoPlayer.playbackState === MediaPlayer.PlayingState) {
-                    videoPlayer.pause();
+                if (mediaPlayer.playbackState === MediaPlayer.PlayingState) {
+                    mediaPlayer.pause();
                 } else {
-                    videoPlayer.play();
+                    mediaPlayer.play();
                 }
             }
         }
 
         Button {
-            id: nextVideo
-            visible: videoSelected
+            id: nextAudio
+            visible: audioSelected
             height: control.height
             width: 30
             anchors.left: playOrPauseButton.right
             anchors.leftMargin: 3
             anchors.top: control.bottom
+            anchors.topMargin: 8
             background: Rectangle {
                 color: "transparent"
             }
-            enabled: listView.currentIndex < videoListModel.count - 1
+            enabled: currentSongIndex < audioListModel.length - 1
             Image {
                 id: nextButton
                 source: "qrc:/assets/Images/Next.svg"
@@ -338,32 +379,20 @@ Item {
                 height: parent.height
             }
             onClicked: {
-                if (listView.currentIndex < videoListModel.count - 1) {
-                    listView.currentIndex++;
+                if (currentSongIndex < audioListModel.length - 1) {
+                    currentSongIndex++;
                     playCurrentItem();
                 }
             }
         }
 
-        Text {
-            visible: videoSelected
-            id: videoDuration
-            text: videoPlayer.duration > 0 ? elapsedTime + "/" + formatDuration(videoPlayer.duration) : elapsedTime + "/" + "0:00"
-            font.pointSize: 12
-            color: "#fff"
-            anchors.bottom: volumeUp.bottom
-            anchors.left: nextVideo.right
-            anchors.leftMargin: 8
-        }
-
         Image {
-            visible: videoSelected
+            visible: audioSelected
             id: volumeUp
             source: "qrc:/assets/Images/Volume_Up.svg"
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 14
-            anchors.right: parent.right
-            anchors.rightMargin: 20
+            anchors.top: control.bottom
+            anchors.topMargin: 12
+            anchors.right: control.right
             width: 25
             height: 25
             MouseArea {
@@ -375,27 +404,24 @@ Item {
                 }
             }
         }
-
         Slider {
             visible: false
             id: volumeControl
-            value: videoPlayer.volume // Initial value
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 10
-            anchors.right: volumeUp.left
+            value: mediaPlayer.volume // Initial value
             width: 150
-
+            anchors.top: control.bottom
+            anchors.topMargin: 10
+            anchors.right: volumeUp.left
             // Slider background and handle properties...
             background: Rectangle {
                 x: volumeControl.leftPadding
                 y: volumeControl.topPadding + volumeControl.availableHeight / 2 - height / 2
                 implicitWidth: 200
-                implicitHeight: 3
+                implicitHeight: 2
                 width: volumeControl.availableWidth
                 height: implicitHeight
                 radius: 2
                 color: "#bdbebf"
-
                 Rectangle {
                     width: volumeControl.visualPosition * parent.width
                     height: parent.height
@@ -406,25 +432,18 @@ Item {
             handle: Rectangle {
                 x: volumeControl.leftPadding + volumeControl.visualPosition * (volumeControl.availableWidth - width)
                 y: volumeControl.topPadding + volumeControl.availableHeight / 2 - height / 2
-                implicitWidth: 20
-                implicitHeight: 20
-                radius: 10
+                implicitWidth: 16
+                implicitHeight: 16
+                radius: 8
                 color: volumeControl.pressed ? "#f0f0f0" : "#f6f6f6"
                 border.color: "#bdbebf"
             }
-
             onValueChanged: {
                 // Set the volume of the media player
-                videoPlayer.volume = volumeControl.value;
+                mediaPlayer.volume = volumeControl.value;
             }
         }
+
     }
-
-    /////////////////////////////////////////////////////////////////////////////////
-
-    property bool videoSelected: false;
-    property bool videoListModelPopulated: false;
-    property string elapsedTime: '0:00';
-    property bool fullScreenMode: false;
 }
 

@@ -15,7 +15,7 @@ CurrentTime::CurrentTime(QObject *parent)
 
 QString CurrentTime::getCurrentTime()
 {
-    QString updatedTime = QTime::currentTime().toString("hh:mm");
+    QString updatedTime = QTime::currentTime().toString("hh:mm:ss");
     m_currentTime = updatedTime;
     emit currentTimeChanged();
     // qDebug() << "Time in cpp: " << updatedTime;m`                `
