@@ -3,8 +3,6 @@ This project aims to develop a Head Unit Qt application running on a Raspberry P
 
 ## Goals and Objectives
 
-The main goal of the PiRacer Instrument Cluster Qt Application project is to create a functioning instrument cluster for a PiRacer car that displays real-time speed data from a speed sensor via CAN bus
-
 1. Develop a robust and scalable head unit application for automotive use on Raspberry Pi
 2. Integrate the application with the instrument cluster app and other vehicle systems through IPC (Inter-Process Communication) and CAN (Controller Area Network)
 3. Implement ambient lighting control through the Head Unit application
